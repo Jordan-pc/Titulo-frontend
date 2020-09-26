@@ -1,51 +1,132 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export const Filter = () => {
+  const [filtro, setFiltro] = useState({
+    categorys: [],
+    tags: []
+  });
+
+  const handleInputChange = (event) => {
+    setFiltro({
+      ...filtro,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const handleInputArrayChange = (event) => {
+    if (event.target.value !== '') {
+      filtro[event.target.name].push(event.target.value);
+    }
+    event.target.value = '';
+    setFiltro({ ...filtro });
+  };
+
+  const sendFilter = (event) => {
+    event.preventDefault();
+    const sendData = {};
+    if (filtro.title) {
+      sendData.title = filtro.title;
+    }
+    if (filtro.categorys.length > 0) {
+      sendData.categorys = filtro.categorys;
+    }
+    if (filtro.tags.length > 0) {
+      sendData.tags = filtro.tags;
+    }
+    getPosts(sendData);
+  };
+
+  const getPosts = async (data) => {
+    const response = await fetch('http://localhost:3000/publications/filter', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const posts = await response.json();
+    console.log(posts);
+  };
+
+  const deleteElement = async (array, index) => {
+    if (array === 'tags') {
+      filtro.tags.splice(index, 1);
+      setFiltro({ ...filtro });
+    } else if (array === 'categoria') {
+      filtro.categorys.splice(index, 1);
+      setFiltro({ ...filtro });
+    }
+  };
+
   return (
     <>
-      <div className='col-md-4 ml-3 mt-3 card'>
-        <form>
-          <div className='from-group mt-3'>
-            <label htmlFor='search'>
-              <h5>Buscar</h5>
-            </label>
-            <input
-              id='search'
-              className='form-control'
-              type='text'
-              placeholder='...'
-            ></input>
-            <button
-              className='btn btn-outline-secondary mt-2 mb-3'
-              type='button'
-            >
-              Buscar
+      <div className='col-md-4 mt-3 mb-3'>
+        <div className='card p-2'>
+          <form onSubmit={sendFilter}>
+            <div className='from-group'>
+              <label htmlFor='search'>
+                <h5>Filtros</h5>
+              </label>
+              <input
+                id='search'
+                className='form-control'
+                type='text'
+                placeholder='Buscar por titulo'
+                name='title'
+                onChange={handleInputChange}
+              ></input>
+            </div>
+            <div className='form-group mt-3'>
+              <label htmlFor='area'>Categorias</label>
+              <input
+                id='area'
+                className='form-control'
+                type='text'
+                placeholder='Buscar por categorias'
+                name='categorys'
+                onBlur={handleInputArrayChange}
+              ></input>
+              <small className='text-muted'>
+                {filtro.categorys.map((categoria, index) => (
+                  <button
+                    className='badge badge-secondary d-inline mr-1'
+                    name='tags'
+                    onClick={() => deleteElement('categoria', index)}
+                    type='button'
+                    key={index}
+                  >
+                    {categoria}
+                  </button>
+                ))}
+              </small>
+            </div>
+            <div className='form-group mt-3'>
+              <label htmlFor='tags'>Tags</label>
+              <input
+                id='tags'
+                className='form-control'
+                type='text'
+                placeholder='Buscar por tags'
+                name='tags'
+                onBlur={handleInputArrayChange}
+              ></input>
+              <small className='text-muted'>
+                {filtro.tags.map((tag, index) => (
+                  <button
+                    className='badge badge-secondary d-inline mr-1'
+                    name='tags'
+                    onClick={() => deleteElement('tags', index)}
+                    type='button'
+                    key={index}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </small>
+            </div>
+            <button type='submit' className='btn btn-outline-secondary mb-3'>
+              Filtrar
             </button>
-          </div>
-          <div className='form-group'>
-            <h5>Filtros</h5>
-            <label htmlFor='area'>Carrera</label>
-            <select className='form-control' id='area'>
-              <option>Ing. en Informática</option>
-              <option>Arquitectura</option>
-              <option>Quimica industrial</option>
-              <option>Trabajo Social</option>
-              <option>Dibujante Proyectista</option>
-            </select>
-          </div>
-          <div className='form-group'>
-            <label htmlFor='tags'>Tags</label>
-            <select multiple className='form-control' id='tags'>
-              <option>Libros</option>
-              <option>Software</option>
-              <option>Herramientas</option>
-              <option>Videos</option>
-            </select>
-          </div>
-          <button type='button' className='btn btn-outline-secondary mb-3'>
-            Filtrar
-          </button>
-        </form>
+          </form>
+        </div>
       </div>
     </>
   );
