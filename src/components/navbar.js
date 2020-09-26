@@ -1,5 +1,5 @@
 import React from 'react';
-import logoutem from '../Logoutem-1.png';
+import logoutem from '../assets/Logoutem-1.png';
 
 export const NavBar = () => {
   return (
