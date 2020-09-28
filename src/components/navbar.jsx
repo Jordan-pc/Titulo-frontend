@@ -36,16 +36,14 @@ export const NavBar = () => {
       </div>
       <div className='navbar-nav ml-md-auto'>
         <a
-          className='nav-link btn btn-outline-info action-button'
-          style={{ color: 'black' }}
-          href='/'
+          className='nav-link btn btn-outline-info action-button text-dark'
+          href='/login'
         >
           Inicio de sección
         </a>
         <a
-          className='nav-link btn btn-outline-info action-button'
-          style={{ color: 'black', marginLeft: '5px' }}
-          href='/'
+          className='nav-link btn btn-outline-info action-button text-dark ml-2'
+          href='/signup'
         >
           Registrarse
         </a>
