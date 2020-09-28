@@ -61,7 +61,7 @@ export const Filter = () => {
 
   return (
     <>
-      <div className='col-md-4 mt-3 mb-3'>
+      <div className='mt-3 mr-3 ml-3 mb-3'>
         <div className='card p-2'>
           <form onSubmit={sendFilter}>
             <div className='from-group'>
