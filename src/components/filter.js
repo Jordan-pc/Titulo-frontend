@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { PostContext } from '../context/postContext';
 
 export const Filter = () => {
   const [filtro, setFiltro] = useState({
     categorys: [],
     tags: []
   });
+
+  const { setPosts } = useContext(PostContext);
 
   const handleInputChange = (event) => {
     setFiltro({
@@ -42,8 +45,8 @@ export const Filter = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    const posts = await response.json();
-    console.log(posts);
+    const publications = await response.json();
+    setPosts(publications);
   };
 
   const deleteElement = async (array, index) => {

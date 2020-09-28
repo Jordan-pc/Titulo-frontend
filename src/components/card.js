@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
+import { PostContext } from '../context/postContext';
 
 export const Card = () => {
-  const [post, setPost] = useState([]);
-
-  const getPosts = async () => {
-    const data = await fetch('http://localhost:3000/publications');
-    const posts = await data.json();
-    setPost(posts);
-  };
+  const { posts } = useContext(PostContext);
 
   const CardFooter = (props) => {
     const categorys = props.post.categorys;
@@ -24,13 +19,9 @@ export const Card = () => {
     return <></>;
   };
 
-  useEffect(() => {
-    getPosts();
-  });
-
   return (
     <>
-      {post.map((post) => (
+      {posts.map((post) => (
         <div className='col-md-8 mt-3 mb-3' key={post._id}>
           <div className='card'>
             <h5 className='card-header'>{post.title}</h5>
