@@ -3,10 +3,7 @@ import logoutem from '../assets/Logoutem-1.png';
 
 export const NavBar = () => {
   return (
-    <nav
-      className='navbar navbar-expand navbar-light flex-column flex-md-row bd-navbar'
-      style={{ backgroundColor: 'white' }}
-    >
+    <nav className='navbar navbar-expand navbar-light flex-column flex-md-row bd-navbar bg-light'>
       <a className='navbar-brand' href='/'>
         <img
           src={logoutem}
