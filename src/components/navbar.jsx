@@ -2,6 +2,25 @@ import React from 'react';
 import logoutem from '../assets/Logoutem-1.png';
 
 export const NavBar = () => {
+  const freetoken = () => {
+    localStorage.removeItem('token');
+    return;
+  };
+
+  const Logged = (props) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return (
+        <li className='nav-item'>
+          <a className='nav-link' href='/' onClick={freetoken}>
+            borrar token
+          </a>
+        </li>
+      );
+    }
+    return <></>;
+  };
+
   return (
     <nav className='navbar navbar-expand navbar-light flex-column flex-md-row bd-navbar bg-light'>
       <a className='navbar-brand' href='/'>
@@ -14,6 +33,7 @@ export const NavBar = () => {
       </a>
       <div className='navbar-nav-scroll'>
         <ul className='navbar-nav bd-navbar-nav flex-row'>
+          <Logged></Logged>
           <li className='nav-item'>
             <a className='nav-link' href='/'>
               Inicio
