@@ -5,19 +5,17 @@ import { PostProvider } from './context/postContext';
 import { Home } from './pages/home';
 import { Register } from './pages/register';
 import { Login } from './pages/login';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Post } from './pages/post';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
   return (
     <Router>
       <NavBar></NavBar>
       <Switch>
-        <Route path='/login' exact>
-          <Login></Login>
-        </Route>
-        <Route path='/signup' exact>
-          <Register></Register>
-        </Route>
+        <Route path='/login' exact component={Login} />
+        <Route path='/signup' exact component={Register} />
+        <Route path='/publications/:id' component={Post} />
         <PostProvider>
           <Route path='/' exact>
             <Home />

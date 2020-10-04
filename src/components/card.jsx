@@ -27,7 +27,7 @@ export const Card = () => {
           <div className='card-body'>
             <p>{post.content.substr(0, 300) + '...'}</p>
             <CardFooter post={post}></CardFooter>
-            <a className='stretched-link' href='/'>
+            <a className='stretched-link' href={'/publications/' + post._id}>
               {' '}
             </a>
           </div>
