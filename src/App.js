@@ -6,6 +6,7 @@ import { Home } from './pages/home';
 import { Register } from './pages/register';
 import { Login } from './pages/login';
 import { Post } from './pages/post';
+import { Publicar } from './pages/publicar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path='/login' exact component={Login} />
         <Route path='/signup' exact component={Register} />
         <Route path='/publications/:id' component={Post} />
+        <Route path='/publicar' component={Publicar} />
         <PostProvider>
           <Route path='/' exact>
             <Home />
