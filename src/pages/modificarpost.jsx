@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export const Publicar = () => {
+export const ModificarPost = (props) => {
   const [form, setForm] = useState({
+    title: '',
+    content: '',
+    url: '',
     categorys: [],
     tags: []
   });
@@ -63,14 +66,17 @@ export const Publicar = () => {
     if (form.tags.length > 0) {
       data.tags = form.tags;
     }
-    const response = await fetch('http://localhost:3000/publish', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token')
-      },
-      body: JSON.stringify(data)
-    });
+    const response = await fetch(
+      'http://localhost:3000/publications/' + props.match.params.id,
+      {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('token')
+        },
+        body: JSON.stringify(data)
+      }
+    );
     const status = await response.json();
     if (response.status !== 200) {
       if (status.message) {
@@ -91,10 +97,25 @@ export const Publicar = () => {
     window.location = '/';
   };
 
+  useEffect(() => {
+    const getPost = async () => {
+      const response = await fetch(
+        'http://localhost:3000/publications/' + props.match.params.id
+      );
+      const post = await response.json();
+      if (post.message) {
+        window.location = '/';
+        return;
+      }
+      setForm(post);
+    };
+    getPost();
+  }, [props.match.params.id]);
+
   return (
     <div className='container mt-5'>
       <div className='jumbotron bg-white'>
-        <h5 className='text-center display-4'>Realiza una publicación</h5>
+        <h5 className='text-center display-4'>Editar publicación</h5>
         <hr className='my-4' />
 
         {errors.map((error, index) => (
@@ -112,7 +133,7 @@ export const Publicar = () => {
               id='title'
               type='text'
               className='form-control'
-              placeholder='Ingrese un título para la publicación'
+              value={form.title}
               name='title'
               onChange={handleInputChange}
             />
@@ -126,7 +147,7 @@ export const Publicar = () => {
               id='url'
               type='url'
               className='form-control'
-              placeholder='Ingrese la url de la herramienta que desea compartir'
+              value={form.url}
               name='url'
               onChange={handleInputChange}
             />
@@ -140,7 +161,7 @@ export const Publicar = () => {
               id='content'
               type='text'
               className='form-control'
-              placeholder='Ingrese una descripción, experiencias o posibles usos del contenido a compartir'
+              value={form.content}
               name='content'
               rows='8'
               onChange={handleInputChange}
@@ -155,7 +176,7 @@ export const Publicar = () => {
               id='categorys'
               type='text'
               className='form-control'
-              placeholder='Ingrese las categorias a las cuales pertenece este contenido'
+              placeholder='Las categorias mostradas debajo son las que posee actualmente, haga click en una para borrarla, o ingrese nuevas aca'
               name='categorys'
               onBlur={handleInputArrayChange}
               onKeyPress={handleInputArrayEnter}
@@ -183,7 +204,7 @@ export const Publicar = () => {
               id='tags'
               type='text'
               className='form-control'
-              placeholder='Ingrese palabras claves del contenido, esto sirve para que los demás usuarios puedan filtrar mejor!'
+              placeholder='Los tags mostrados debajo son los que posee actualmente, haga click en una para borrarla, o ingrese nuevas aca'
               name='tags'
               onBlur={handleInputArrayChange}
               onKeyPress={handleInputArrayEnter}
@@ -203,8 +224,11 @@ export const Publicar = () => {
             </small>
           </div>
           <button type='submit' className='btn btn-primary mt-3'>
-            Publicar
+            Modificar
           </button>
+          <a className='btn btn-primary ml-3 mt-3' href='/' role='button'>
+            Volver
+          </a>
         </form>
       </div>
     </div>

@@ -4,10 +4,39 @@ export const Post = (props) => {
   const [Publication, setPublication] = useState({});
   const [publishedBy, setPublishedBy] = useState({});
   const [comments, setComments] = useState([]);
+  const [ID, setId] = useState();
 
   const Comment = () => {
     if (comments.length !== 0) {
       return <h3 className='ml-5'>Comentarios</h3>;
+    }
+    return <></>;
+  };
+
+  const ShowContent = () => {
+    if (Publication.content) {
+      const text = Publication.content.split('\n');
+      return (
+        <>
+          {text.map((item, index) => (
+            <p className='text-dark' key={index}>
+              {item}
+            </p>
+          ))}
+        </>
+      );
+    }
+    return <></>;
+  };
+
+  const EditButton = () => {
+    const id = localStorage.getItem('id');
+    if (id && id === publishedBy._id) {
+      return (
+        <a className='btn btn-primary mt-3 mr-3' href={ID} role='button'>
+          Editar
+        </a>
+      );
     }
     return <></>;
   };
@@ -40,6 +69,7 @@ export const Post = (props) => {
       setPublishedBy(post.publishedBy);
       setPublication(post);
       setComments(comentarios);
+      setId('modify/' + props.match.params.id);
     };
     getPost();
   }, [props.match.params.id]);
@@ -56,7 +86,8 @@ export const Post = (props) => {
             <p className='text-muted ml-3'>Tags: {Publication.tags + ' '}</p>
           </div>
 
-          <p className='text-dark'>{Publication.content}</p>
+          <ShowContent></ShowContent>
+
           <button
             className='btn btn-link text-decoration-none'
             onClick={openUrl}
@@ -66,7 +97,8 @@ export const Post = (props) => {
           <div className='mt-3'>
             <p className='text-muted'>Publicado por: {publishedBy.name}</p>
           </div>
-          <a className='btn btn-primary' href='/' role='button'>
+          <EditButton></EditButton>
+          <a className='btn btn-primary mt-3' href='/' role='button'>
             Volver
           </a>
         </div>

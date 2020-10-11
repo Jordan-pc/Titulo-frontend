@@ -24,6 +24,24 @@ export const Filter = () => {
     setFiltro({ ...filtro });
   };
 
+  const handleInputArrayEnter = (event) => {
+    if (event.charCode === 13 && event.target.value !== '') {
+      for (const validate of filtro[event.target.name]) {
+        if (validate === event.target.value) {
+          event.target.value = '';
+          event.preventDefault();
+          return;
+        }
+      }
+      filtro[event.target.name].push(event.target.value);
+      event.target.value = '';
+      setFiltro({ ...filtro });
+      event.preventDefault();
+    } else if (event.charCode === 13) {
+      event.preventDefault();
+    }
+  };
+
   const sendFilter = (event) => {
     event.preventDefault();
     const sendData = {};
@@ -86,6 +104,7 @@ export const Filter = () => {
                 placeholder='Buscar por categorias'
                 name='categorys'
                 onBlur={handleInputArrayChange}
+                onKeyPress={handleInputArrayEnter}
               ></input>
               <small className='text-muted'>
                 {filtro.categorys.map((categoria, index) => (
@@ -110,6 +129,7 @@ export const Filter = () => {
                 placeholder='Buscar por tags'
                 name='tags'
                 onBlur={handleInputArrayChange}
+                onKeyPress={handleInputArrayEnter}
               ></input>
               <small className='text-muted'>
                 {filtro.tags.map((tag, index) => (
