@@ -3,12 +3,12 @@ import logoutem from '../assets/Logoutem-1.png';
 
 export const NavBar = () => {
   const cerrarSesion = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     return;
   };
 
   const UserRole = (props) => {
-    const role = localStorage.getItem('role');
+    const role = sessionStorage.getItem('role');
     if (role === 'ADMIN') {
       return (
         <>
@@ -24,7 +24,7 @@ export const NavBar = () => {
   };
 
   const Logged = (props) => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       return (
         <>
@@ -41,7 +41,7 @@ export const NavBar = () => {
                 </a>
               </li>
               <li className='nav-item'>
-                <a className='nav-link' href='/publicaciones'>
+                <a className='nav-link' href='/mispublicaciones'>
                   Mis publicaciones
                 </a>
               </li>
@@ -53,7 +53,7 @@ export const NavBar = () => {
               className='nav-link btn btn-outline-info action-button text-dark ml-2'
               href='/perfil'
             >
-              Hola {localStorage.getItem('name')}
+              Hola {sessionStorage.getItem('name')}
             </a>
             <a
               className='nav-link btn btn-outline-info action-button text-dark ml-2'

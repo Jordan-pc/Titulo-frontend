@@ -72,7 +72,7 @@ export const ModificarPost = (props) => {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: localStorage.getItem('token')
+          Authorization: sessionStorage.getItem('token')
         },
         body: JSON.stringify(data)
       }

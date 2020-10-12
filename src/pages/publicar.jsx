@@ -67,11 +67,12 @@ export const Publicar = () => {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token')
+        Authorization: sessionStorage.getItem('token')
       },
       body: JSON.stringify(data)
     });
     const status = await response.json();
+
     if (response.status !== 200) {
       if (status.message) {
         setErrors([status.message]);

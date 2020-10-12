@@ -36,13 +36,11 @@ export const Login = () => {
       }
     }
     if (status.accessToken) {
-      localStorage.setItem('token', status.accessToken);
-      localStorage.setItem('role', status.role);
-      localStorage.setItem('id', status.id);
-      localStorage.setItem('name', status.name);
+      sessionStorage.setItem('token', status.accessToken);
+      sessionStorage.setItem('role', status.role);
+      sessionStorage.setItem('id', status.id);
+      sessionStorage.setItem('name', status.name);
     }
-    // console.log(localStorage.getItem('token'));
-    // console.log('redirect');
     window.location = '/';
   };
 
