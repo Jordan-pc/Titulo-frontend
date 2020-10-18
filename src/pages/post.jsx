@@ -1,15 +1,127 @@
 import React, { useState, useEffect } from 'react';
+import { Comment } from '../components/comment';
 
 export const Post = (props) => {
   const [Publication, setPublication] = useState({ url: '' });
   const [publishedBy, setPublishedBy] = useState({});
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([
+    {
+      _id: '',
+      content: '',
+      commentedBy: ''
+    }
+  ]);
   const [ID, setId] = useState();
   const [errors, setErrors] = useState([]);
 
-  const Comment = () => {
+  const CommentTitle = () => {
+    const id = sessionStorage.getItem('id');
     if (comments.length !== 0) {
       return <h3 className='ml-5'>Comentarios</h3>;
+    }
+    if (id) {
+      return <h3 className='ml-5'>Se el primero en comentar!</h3>;
+    }
+    return <></>;
+  };
+
+  const ShowComments = () => {
+    const id = sessionStorage.getItem('id');
+    const role = sessionStorage.getItem('role');
+    return (
+      <>
+        {comments.map((comment, index) => {
+          if (comment.commentedBy === id || role === 'ADMIN') {
+            return (
+              <div
+                className='w-75 card ml-5 mr-5 mb-2 bg-light'
+                key={comment._id}
+              >
+                <form className='p-3'>
+                  <div className='form-group'>
+                    <textarea
+                      id='content'
+                      type='text'
+                      className='form-control'
+                      name='content'
+                      defaultValue={comment.content}
+                      onChange={(event) => {
+                        comments[index].content = event.target.value;
+                        console.log(comments[index]);
+                      }}
+                    />
+                  </div>
+                  <button
+                    className='btn btn-primary'
+                    onClick={async () => {
+                      const response = await fetch(
+                        'http://localhost:3000/publications/comment/change/' +
+                          comment._id,
+                        {
+                          method: 'put',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: sessionStorage.getItem('token')
+                          },
+                          body: JSON.stringify({
+                            content:
+                              sessionStorage.getItem('name') +
+                              ': ' +
+                              comment.content
+                          })
+                        }
+                      );
+                      const status = await response.json();
+                      if (response.status !== 200) {
+                        console.log(status.message);
+                      }
+                    }}
+                  >
+                    Modificar
+                  </button>
+                  <button
+                    className='btn btn-danger float-right'
+                    onClick={async () => {
+                      const response = await fetch(
+                        'http://localhost:3000/commentdelete/' + comment._id,
+                        {
+                          method: 'delete',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: sessionStorage.getItem('token')
+                          }
+                        }
+                      );
+                      const status = await response.json();
+                      if (response.status !== 200) {
+                        console.log(status.message);
+                      }
+                    }}
+                  >
+                    Borrar
+                  </button>
+                </form>
+              </div>
+            );
+          }
+          return (
+            <div
+              className='w-75 card ml-5 mr-5 mb-2 bg-light'
+              key={comment._id}
+            >
+              <div className='card-body'>{comment.content}</div>
+            </div>
+          );
+        })}
+      </>
+    );
+  };
+
+  const DoComment = () => {
+    const id = sessionStorage.getItem('id');
+    const role = sessionStorage.getItem('role');
+    if (id || role === 'ADMIN') {
+      return <Comment id={props.match.params.id}></Comment>;
     }
     return <></>;
   };
@@ -20,7 +132,6 @@ export const Post = (props) => {
       .replace('http://', '')
       .replace('https://', '')
       .split(/[/?#]/);
-    console.log(props.match.params.id);
     return (
       // eslint-disable-next-line
       <a className='text-decoration-none' onClick={openUrl}>
@@ -128,7 +239,7 @@ export const Post = (props) => {
         return;
       }
       post.comments.forEach((element) => {
-        comentarios.push(element.content);
+        comentarios.push(element);
       });
       setPublishedBy(post.publishedBy);
       setPublication(post);
@@ -167,12 +278,14 @@ export const Post = (props) => {
         </div>
       </div>
 
-      <Comment></Comment>
-      {comments.map((comment, index) => (
+      <CommentTitle></CommentTitle>
+      {/* {comments.map((comment, index) => (
         <div className='w-75 card ml-5 mr-5 mb-2 bg-light' key={index}>
           <div className='card-body'>{comment}</div>
         </div>
-      ))}
+      ))} */}
+      <ShowComments></ShowComments>
+      <DoComment></DoComment>
     </>
   );
 };
