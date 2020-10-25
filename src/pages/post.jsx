@@ -31,7 +31,7 @@ export const Post = (props) => {
     return (
       <>
         {comments.map((comment, index) => {
-          if (comment.commentedBy === id || role === 'ADMIN') {
+          if (comment.commentedBy === id) {
             return (
               <div
                 className='w-75 card ml-5 mr-5 mb-2 bg-light'
@@ -67,7 +67,10 @@ export const Post = (props) => {
                             content:
                               sessionStorage.getItem('name') +
                               ': ' +
-                              comment.content
+                              comment.content.replace(
+                                sessionStorage.getItem('name') + ': ',
+                                ''
+                              )
                           })
                         }
                       );
@@ -101,6 +104,39 @@ export const Post = (props) => {
                     Borrar
                   </button>
                 </form>
+              </div>
+            );
+          } else if (role === 'ADMIN') {
+            return (
+              <div
+                className='w-75 card ml-5 mr-5 mb-2 bg-light'
+                key={comment._id}
+              >
+                <div className='card-body'>{comment.content}</div>
+                <div>
+                  <button
+                    className='btn btn-danger mb-3 mr-3 float-right'
+                    onClick={async () => {
+                      const response = await fetch(
+                        'http://localhost:3000/commentdelete/' + comment._id,
+                        {
+                          method: 'delete',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: sessionStorage.getItem('token')
+                          }
+                        }
+                      );
+                      const status = await response.json();
+                      if (response.status !== 200) {
+                        console.log(status.message);
+                      }
+                      window.location.reload();
+                    }}
+                  >
+                    Borrar
+                  </button>
+                </div>
               </div>
             );
           }
@@ -179,6 +215,24 @@ export const Post = (props) => {
           onClick={sendBorrar}
         >
           Borrar
+        </button>
+      );
+    }
+    return <></>;
+  };
+
+  const ReportButton = () => {
+    const id = sessionStorage.getItem('id');
+    const role = sessionStorage.getItem('role');
+    if (id && id !== publishedBy._id && role !== 'ADMIN') {
+      return (
+        <button
+          className='btn btn-danger mt-3 float-right'
+          onClick={() => {
+            window.location = '/reportar/' + ID.replace('modify/', '');
+          }}
+        >
+          Reportar publicación
         </button>
       );
     }
@@ -275,6 +329,7 @@ export const Post = (props) => {
             Volver
           </a>
           <DeleteButton></DeleteButton>
+          <ReportButton></ReportButton>
         </div>
       </div>
 
