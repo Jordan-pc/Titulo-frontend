@@ -10,6 +10,7 @@ import { Publicar } from './pages/publicar';
 import { ModificarPost } from './pages/modificarpost';
 import { MisPublicaciones } from './pages/mispublicaciones';
 import { Reportar } from './pages/reportar';
+import { Reports } from './pages/reports';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path='/login' exact component={Login} />
         <Route path='/signup' exact component={Register} />
         <Route path='/mispublicaciones' exact component={MisPublicaciones} />
+        <Route path='/reportes' exact component={Reports} />
         <Route path='/reportar/:id' component={Reportar} />
         <Route path='/publications/modify/:id' component={ModificarPost} />
         <Route path='/publications/:id' component={Post} />

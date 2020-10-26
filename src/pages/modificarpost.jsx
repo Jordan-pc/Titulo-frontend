@@ -226,9 +226,14 @@ export const ModificarPost = (props) => {
           <button type='submit' className='btn btn-primary mt-3'>
             Modificar
           </button>
-          <a className='btn btn-primary ml-3 mt-3' href='/' role='button'>
-            Volver
-          </a>
+          <button
+            className='btn btn-primary mt-3 ml-3'
+            onClick={() => {
+              window.location = '/';
+            }}
+          >
+            Volver al inicio
+          </button>
         </form>
       </div>
     </div>

@@ -206,6 +206,14 @@ export const Publicar = () => {
           <button type='submit' className='btn btn-primary mt-3'>
             Publicar
           </button>
+          <button
+            className='btn btn-primary mt-3 ml-3'
+            onClick={() => {
+              window.location = '/';
+            }}
+          >
+            Volver al inicio
+          </button>
         </form>
       </div>
     </div>

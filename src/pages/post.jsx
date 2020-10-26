@@ -325,9 +325,14 @@ export const Post = (props) => {
             </p>
           ))}
           <EditButton></EditButton>
-          <a className='btn btn-primary mt-3' href='/' role='button'>
-            Volver
-          </a>
+          <button
+            className='btn btn-primary mt-3 ml-3'
+            onClick={() => {
+              window.location = '/';
+            }}
+          >
+            Volver al inicio
+          </button>
           <DeleteButton></DeleteButton>
           <ReportButton></ReportButton>
         </div>
