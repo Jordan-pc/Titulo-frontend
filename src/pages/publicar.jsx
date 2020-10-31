@@ -93,15 +93,17 @@ export const Publicar = () => {
   };
 
   return (
-    <div className='container mt-5'>
+    <div className='card m-4'>
       <div className='jumbotron bg-white'>
         <h5 className='text-center display-4'>Realiza una publicación</h5>
         <hr className='my-4' />
 
         {errors.map((error, index) => (
-          <p className='text-danger text-break text-justify' key={index}>
-            Error: {error}
-          </p>
+          <div className='card border-danger mx-auto m-2' key={index}>
+            <div className='card-body text-danger'>
+              <p className='card-text'>Error: {error}</p>
+            </div>
+          </div>
         ))}
 
         <form onSubmit={sendPost}>

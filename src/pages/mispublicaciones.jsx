@@ -26,12 +26,13 @@ export const MisPublicaciones = () => {
   }, []);
 
   return (
-    <div className='bg-white rounded box-shadow m-3 p-3'>
+    <div className='bg-white rounded box-shadow m-4 p-3'>
       <Title></Title>
       {posts.map((post, index) => (
         <div key={index} className='card m-1 mb-3'>
+          <h5 className='card-title card-header'>{post.title}</h5>
           <div className='card-body'>
-            <h5 className='card-title'>{post.title}</h5>
+            <p className='card-title'>{post.content.substr(0, 300) + '...'}</p>
             <a className='stretched-link' href={'/publications/' + post._id}>
               {' '}
             </a>

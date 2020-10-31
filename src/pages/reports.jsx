@@ -66,7 +66,7 @@ export const Reports = () => {
   }, []);
 
   return (
-    <div className='bg-white rounded box-shadow m-3 p-3'>
+    <div className='bg-white rounded box-shadow m-4 p-3'>
       <h2 className='page-header mb-4 p-2'>Reportes</h2>
       {errors.map((error, index) => (
         <p className='text-danger text-break text-justify' key={index}>
