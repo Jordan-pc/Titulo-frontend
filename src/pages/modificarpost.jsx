@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { environment } from '../config/environment';
 
 export const ModificarPost = (props) => {
   const [form, setForm] = useState({
@@ -19,14 +20,16 @@ export const ModificarPost = (props) => {
 
   const handleInputArrayEnter = (event) => {
     if (event.charCode === 13 && event.target.value !== '') {
+      let word = event.target.value;
+      word = word.toLocaleLowerCase();
       for (const validate of form[event.target.name]) {
-        if (validate === event.target.value) {
+        if (validate === word) {
           event.target.value = '';
           event.preventDefault();
           return;
         }
       }
-      form[event.target.name].push(event.target.value);
+      form[event.target.name].push(word);
       event.target.value = '';
       setForm({ ...form });
       event.preventDefault();
@@ -37,7 +40,16 @@ export const ModificarPost = (props) => {
 
   const handleInputArrayChange = (event) => {
     if (event.target.value !== '') {
-      form[event.target.name].push(event.target.value);
+      let word = event.target.value;
+      word = word.toLocaleLowerCase();
+      for (const validate of form[event.target.name]) {
+        if (validate === word) {
+          event.target.value = '';
+          event.preventDefault();
+          return;
+        }
+      }
+      form[event.target.name].push(word);
       event.target.value = '';
       setForm({ ...form });
     }
@@ -67,7 +79,7 @@ export const ModificarPost = (props) => {
       data.tags = form.tags;
     }
     const response = await fetch(
-      'http://localhost:3000/publications/' + props.match.params.id,
+      environment.API_URL + '/publications/' + props.match.params.id,
       {
         method: 'put',
         headers: {
@@ -100,7 +112,7 @@ export const ModificarPost = (props) => {
   useEffect(() => {
     const getPost = async () => {
       const response = await fetch(
-        'http://localhost:3000/publications/' + props.match.params.id
+        environment.API_URL + '/publications/' + props.match.params.id
       );
       const post = await response.json();
       if (post.message) {
@@ -174,15 +186,18 @@ export const ModificarPost = (props) => {
             <h5>
               <label htmlFor='categorys'>Categorias</label>
             </h5>
-            <input
-              id='categorys'
-              type='text'
-              className='form-control'
-              placeholder='Las categorias mostradas debajo son las que posee actualmente, haga click en una para borrarla, o ingrese nuevas aca'
+            <select
+              className='selectpicker form-control'
               name='categorys'
-              onBlur={handleInputArrayChange}
-              onKeyPress={handleInputArrayEnter}
-            />
+              multiple='multiple'
+              onChange={handleInputArrayChange}
+            >
+              <option disabled>Selección multiple</option>
+              <option value='ingeniería'>Ingeniería</option>
+              <option value='software'>Software</option>
+              <option value='arquitectura'>Arquitectura</option>
+              <option value='ciencia'>Ciencia</option>
+            </select>
             <small className='text-muted'>
               {form.categorys.map((categoria, index) => (
                 <button

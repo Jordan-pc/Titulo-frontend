@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { environment } from '../config/environment';
 
 export const Reports = () => {
   const [reports, setReports] = useState([
@@ -12,7 +13,7 @@ export const Reports = () => {
   const [errors, setErrors] = useState([]);
 
   const resolveReport = async (id) => {
-    const response = await fetch('http://localhost:3000/report/' + id, {
+    const response = await fetch(environment.API_URL + '/report/' + id, {
       method: 'put',
       headers: {
         'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ export const Reports = () => {
 
   useEffect(() => {
     const getPost = async () => {
-      const response = await fetch('http://localhost:3000/reports', {
+      const response = await fetch(environment.API_URL + '/reports', {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',

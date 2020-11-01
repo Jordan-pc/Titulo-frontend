@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { environment } from '../config/environment';
 
 export const Login = () => {
   const [register, setRegister] = useState({});
@@ -19,7 +20,7 @@ export const Login = () => {
       setErrors(['Ingrese un correo valido']);
       return;
     }
-    const response = await fetch('http://localhost:3000/auth/login', {
+    const response = await fetch(environment.API_URL + '/auth/login', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(register)

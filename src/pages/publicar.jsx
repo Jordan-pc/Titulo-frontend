@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { environment } from '../config/environment';
 
 export const Publicar = () => {
   const [form, setForm] = useState({
@@ -16,14 +17,16 @@ export const Publicar = () => {
 
   const handleInputArrayEnter = (event) => {
     if (event.charCode === 13 && event.target.value !== '') {
+      let word = event.target.value;
+      word = word.toLocaleLowerCase();
       for (const validate of form[event.target.name]) {
-        if (validate === event.target.value) {
+        if (validate === word) {
           event.target.value = '';
           event.preventDefault();
           return;
         }
       }
-      form[event.target.name].push(event.target.value);
+      form[event.target.name].push(word);
       event.target.value = '';
       setForm({ ...form });
       event.preventDefault();
@@ -34,7 +37,16 @@ export const Publicar = () => {
 
   const handleInputArrayChange = (event) => {
     if (event.target.value !== '') {
-      form[event.target.name].push(event.target.value);
+      let word = event.target.value;
+      word = word.toLocaleLowerCase();
+      for (const validate of form[event.target.name]) {
+        if (validate === word) {
+          event.target.value = '';
+          event.preventDefault();
+          return;
+        }
+      }
+      form[event.target.name].push(word);
       event.target.value = '';
       setForm({ ...form });
     }
@@ -63,7 +75,7 @@ export const Publicar = () => {
     if (form.tags.length > 0) {
       data.tags = form.tags;
     }
-    const response = await fetch('http://localhost:3000/publish', {
+    const response = await fetch(environment.API_URL + '/publish', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -154,15 +166,18 @@ export const Publicar = () => {
             <h5>
               <label htmlFor='categorys'>Categorias</label>
             </h5>
-            <input
-              id='categorys'
-              type='text'
-              className='form-control'
-              placeholder='Ingrese las categorias a las cuales pertenece este contenido'
+            <select
+              className='selectpicker form-control'
               name='categorys'
-              onBlur={handleInputArrayChange}
-              onKeyPress={handleInputArrayEnter}
-            />
+              multiple='multiple'
+              onChange={handleInputArrayChange}
+            >
+              <option disabled>Selección multiple</option>
+              <option value='ingeniería'>Ingeniería</option>
+              <option value='software'>Software</option>
+              <option value='arquitectura'>Arquitectura</option>
+              <option value='ciencia'>Ciencia</option>
+            </select>
             <small className='text-muted'>
               {form.categorys.map((categoria, index) => (
                 <button

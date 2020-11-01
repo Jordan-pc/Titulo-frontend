@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { environment } from '../config/environment';
 
 export const Comment = (props) => {
   const [postComment, setPostComment] = useState({ content: '' });
@@ -17,7 +18,7 @@ export const Comment = (props) => {
       content: sessionStorage.getItem('name') + ': ' + postComment.content
     };
     const response = await fetch(
-      'http://localhost:3000/publications/' + props.id + '/comment',
+      environment.API_URL + '/publications/' + props.id + '/comment',
       {
         method: 'post',
         headers: {

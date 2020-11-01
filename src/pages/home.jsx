@@ -3,16 +3,17 @@ import { PostContext } from '../context/postContext';
 
 import { Card } from '../components/card';
 import { Filter } from '../components/filter';
+import { environment } from '../config/environment';
 
 export const Home = () => {
   const [next, setNext] = useState(false);
   let [page, setPage] = useState(1);
 
-  const { setPosts, filtered } = useContext(PostContext);
+  const { setPosts, filtered, posts } = useContext(PostContext);
 
   const getPosts = async () => {
     const response = await fetch(
-      'http://localhost:3000/publications?page=' + page
+      environment.API_URL + '/publications?page=' + page
     );
     const publications = await response.json();
     setPosts(publications);
@@ -33,7 +34,7 @@ export const Home = () => {
       <div className='row no-gutters'>
         <button
           className='btn btn-light m-3'
-          disabled={page === 1 || filtered}
+          disabled={page <= 1 || filtered}
           onClick={async () => {
             if (page > 1) {
               page = page - 1;
@@ -46,7 +47,7 @@ export const Home = () => {
         </button>
         <button
           className='btn btn-light m-3'
-          disabled={next || filtered}
+          disabled={next || filtered || posts.length < 5}
           onClick={async () => {
             page = page + 1;
             setPage(page);

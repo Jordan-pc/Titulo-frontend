@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { environment } from '../config/environment';
 import { PostContext } from '../context/postContext';
 
 export const Filter = () => {
@@ -18,7 +19,16 @@ export const Filter = () => {
 
   const handleInputArrayChange = (event) => {
     if (event.target.value !== '') {
-      filtro[event.target.name].push(event.target.value);
+      let word = event.target.value;
+      word = word.toLocaleLowerCase();
+      for (const validate of filtro[event.target.name]) {
+        if (validate === word) {
+          event.target.value = '';
+          event.preventDefault();
+          return;
+        }
+      }
+      filtro[event.target.name].push(word);
     }
     event.target.value = '';
     setFiltro({ ...filtro });
@@ -26,14 +36,16 @@ export const Filter = () => {
 
   const handleInputArrayEnter = (event) => {
     if (event.charCode === 13 && event.target.value !== '') {
+      let word = event.target.value;
+      word = word.toLocaleLowerCase();
       for (const validate of filtro[event.target.name]) {
-        if (validate === event.target.value) {
+        if (validate === word) {
           event.target.value = '';
           event.preventDefault();
           return;
         }
       }
-      filtro[event.target.name].push(event.target.value);
+      filtro[event.target.name].push(word);
       event.target.value = '';
       setFiltro({ ...filtro });
       event.preventDefault();
@@ -59,7 +71,7 @@ export const Filter = () => {
   };
 
   const getPosts = async (data) => {
-    const response = await fetch('http://localhost:3000/publications/filter', {
+    const response = await fetch(environment.API_URL + '/publications/filter', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -98,15 +110,18 @@ export const Filter = () => {
             </div>
             <div className='form-group mt-3'>
               <label htmlFor='area'>Categorias</label>
-              <input
-                id='area'
-                className='form-control'
-                type='text'
-                placeholder='Buscar por categorias'
+              <select
+                className='selectpicker form-control'
                 name='categorys'
-                onBlur={handleInputArrayChange}
-                onKeyPress={handleInputArrayEnter}
-              ></input>
+                multiple='multiple'
+                onChange={handleInputArrayChange}
+              >
+                <option disabled>Selección multiple</option>
+                <option value='ingeniería'>Ingeniería</option>
+                <option value='software'>Software</option>
+                <option value='arquitectura'>Arquitectura</option>
+                <option value='ciencia'>Ciencia</option>
+              </select>
               <small className='text-muted'>
                 {filtro.categorys.map((categoria, index) => (
                   <button

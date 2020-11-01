@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { environment } from '../config/environment';
 
 export const MisPublicaciones = () => {
   const [posts, setPosts] = useState([]);
@@ -12,7 +13,7 @@ export const MisPublicaciones = () => {
 
   useEffect(() => {
     const getPosts = async () => {
-      const response = await fetch('http://localhost:3000/myposts', {
+      const response = await fetch(environment.API_URL + '/myposts', {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',

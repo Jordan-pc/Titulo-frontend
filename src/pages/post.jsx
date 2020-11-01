@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Comment } from '../components/comment';
+import { environment } from '../config/environment';
 
 export const Post = (props) => {
   const [Publication, setPublication] = useState({ url: '' });
@@ -55,7 +56,8 @@ export const Post = (props) => {
                     className='btn btn-primary'
                     onClick={async () => {
                       const response = await fetch(
-                        'http://localhost:3000/publications/comment/change/' +
+                        environment.API_URL +
+                          '/publications/comment/change/' +
                           comment._id,
                         {
                           method: 'put',
@@ -86,7 +88,7 @@ export const Post = (props) => {
                     className='btn btn-danger float-right'
                     onClick={async () => {
                       const response = await fetch(
-                        'http://localhost:3000/commentdelete/' + comment._id,
+                        environment.API_URL + '/commentdelete/' + comment._id,
                         {
                           method: 'delete',
                           headers: {
@@ -118,7 +120,7 @@ export const Post = (props) => {
                     className='btn btn-danger mb-3 mr-3 float-right'
                     onClick={async () => {
                       const response = await fetch(
-                        'http://localhost:3000/commentdelete/' + comment._id,
+                        environment.API_URL + '/commentdelete/' + comment._id,
                         {
                           method: 'delete',
                           headers: {
@@ -241,7 +243,7 @@ export const Post = (props) => {
 
   const sendBorrar = async () => {
     const response = await fetch(
-      'http://localhost:3000/publications/' + props.match.params.id,
+      environment.API_URL + '/publications/' + props.match.params.id,
       {
         method: 'delete',
         headers: {
@@ -285,7 +287,7 @@ export const Post = (props) => {
     const getPost = async () => {
       const comentarios = [];
       const response = await fetch(
-        'http://localhost:3000/publications/' + props.match.params.id
+        environment.API_URL + '/publications/' + props.match.params.id
       );
       const post = await response.json();
       if (post.message) {

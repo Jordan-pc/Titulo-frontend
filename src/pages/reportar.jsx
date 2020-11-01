@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { environment } from '../config/environment';
 
 export const Reportar = (props) => {
   const [report, setReport] = useState({});
@@ -17,7 +18,7 @@ export const Reportar = (props) => {
       setErrors(['Porfavor seleccione la falta o problema']);
     } else {
       const response = await fetch(
-        'http://localhost:3000/report/publication/' + props.match.params.id,
+        environment.API_URL + '/report/publication/' + props.match.params.id,
         {
           method: 'post',
           headers: {

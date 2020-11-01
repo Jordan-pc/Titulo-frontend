@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { environment } from '../config/environment';
 
 export const PostContext = createContext();
 
@@ -8,7 +9,7 @@ export const PostProvider = (props) => {
 
   useEffect(() => {
     const getPosts = async () => {
-      const response = await fetch('http://localhost:3000/publications');
+      const response = await fetch(environment.API_URL + '/publications');
       const publications = await response.json();
       setPosts(publications);
     };

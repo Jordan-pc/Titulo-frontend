@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { environment } from '../config/environment';
 
 export const Perfil = () => {
   const [profile, setProfile] = useState({
@@ -47,7 +48,7 @@ export const Perfil = () => {
     }
     if (profile.old) {
       data.old = profile.old;
-      const response = await fetch('http://localhost:3000/profile/change', {
+      const response = await fetch(environment.API_URL + '/profile/change', {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ export const Perfil = () => {
 
   useEffect(() => {
     const getProfile = async () => {
-      const response = await fetch('http://localhost:3000/profile', {
+      const response = await fetch(environment.API_URL + '/profile', {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
