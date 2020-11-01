@@ -13,6 +13,7 @@ export const Login = () => {
 
   const sendLogin = async (event) => {
     event.preventDefault();
+    // eslint-disable-next-line
     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!regex.test(register.email)) {
       setErrors(['Ingrese un correo valido']);

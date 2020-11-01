@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 export const MisPublicaciones = () => {
   const [posts, setPosts] = useState([]);
 
-  const Title = () => {
+  const TextNoPost = () => {
     if (posts.length > 0) {
-      return <h4 className='mb-4 p-2'>Mis publicaciones</h4>;
+      return <></>;
     }
-    return <strong>Usted no ha realizado ninguna publicación</strong>;
+    return <p>No hay publicaciones registradas</p>;
   };
 
   useEffect(() => {
@@ -27,7 +27,8 @@ export const MisPublicaciones = () => {
 
   return (
     <div className='bg-white rounded box-shadow m-4 p-3'>
-      <Title></Title>
+      <h4 className='mb-4 p-2'>Mis publicaciones</h4>
+      <TextNoPost></TextNoPost>
       {posts.map((post, index) => (
         <div key={index} className='card m-1 mb-3'>
           <h5 className='card-title card-header'>{post.title}</h5>
