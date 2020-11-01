@@ -7,7 +7,7 @@ export const Filter = () => {
     tags: []
   });
 
-  const { setPosts } = useContext(PostContext);
+  const { setPosts, setFiltered } = useContext(PostContext);
 
   const handleInputChange = (event) => {
     setFiltro({
@@ -55,6 +55,7 @@ export const Filter = () => {
       sendData.tags = filtro.tags;
     }
     getPosts(sendData);
+    setFiltered(true);
   };
 
   const getPosts = async (data) => {
@@ -145,8 +146,24 @@ export const Filter = () => {
                 ))}
               </small>
             </div>
-            <button type='submit' className='btn btn-outline-secondary mb-3'>
+            <button
+              type='submit'
+              className='btn btn-outline-secondary mb-3'
+              disabled={
+                !filtro.title &&
+                filtro.categorys.length === 0 &&
+                filtro.tags.length === 0
+              }
+            >
               Filtrar
+            </button>
+            <button
+              className='btn btn-outline-secondary mb-3 ml-3'
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              Limpiar
             </button>
           </form>
         </div>

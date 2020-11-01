@@ -39,6 +39,14 @@ export const MisPublicaciones = () => {
           </div>
         </div>
       ))}
+      <button
+        className='btn btn-primary mt-3 ml-3'
+        onClick={() => {
+          window.location = '/';
+        }}
+      >
+        Volver al inicio
+      </button>
     </div>
   );
 };

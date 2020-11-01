@@ -167,7 +167,7 @@ export const Publicar = () => {
               {form.categorys.map((categoria, index) => (
                 <button
                   className='badge badge-secondary d-inline mr-1'
-                  name='tags'
+                  name='categorys'
                   onClick={() => deleteElement('categoria', index)}
                   type='button'
                   key={index}
@@ -205,7 +205,17 @@ export const Publicar = () => {
               ))}
             </small>
           </div>
-          <button type='submit' className='btn btn-primary mt-3'>
+          <button
+            type='submit'
+            className='btn btn-primary mt-3'
+            disabled={
+              form.categorys < 1 ||
+              form.tags < 1 ||
+              !form.content ||
+              !form.url ||
+              !form.title
+            }
+          >
             Publicar
           </button>
           <button

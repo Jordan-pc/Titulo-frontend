@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 export const Register = () => {
   const [register, setRegister] = useState({});
+  const [res, setRes] = useState(false);
   const [errors, setErrors] = useState([]);
 
   const handleInputChange = (event) => {
@@ -22,6 +23,7 @@ export const Register = () => {
     if (response.status !== 200) {
       if (status.message) {
         setErrors([status.message]);
+        setRes(false);
         return;
       } else if (status.errors) {
         const err = [];
@@ -32,10 +34,24 @@ export const Register = () => {
           return err;
         });
         setErrors([err]);
+        setRes(false);
         return;
       }
     }
-    window.location = '/';
+    setRes(true);
+  };
+
+  const Success = () => {
+    if (res) {
+      return (
+        <div className='card border-success mx-auto m-2'>
+          <div className='card-body text-success'>
+            <p className='card-text'>Usuario registrado correctamente</p>
+          </div>
+        </div>
+      );
+    }
+    return <></>;
   };
 
   return (
@@ -46,10 +62,14 @@ export const Register = () => {
     >
       <h3 className='text-center'>Registrate</h3>
 
+      <Success></Success>
+
       {errors.map((error, index) => (
-        <p className='text-danger text-break text-justify' key={index}>
-          Error: {error}
-        </p>
+        <div className='card border-danger mx-auto m-2' key={index}>
+          <div className='card-body text-danger'>
+            <p className='card-text'>Error: {error}</p>
+          </div>
+        </div>
       ))}
 
       <div className='form-group'>
@@ -85,7 +105,28 @@ export const Register = () => {
         />
       </div>
 
-      <button type='submit' className='btn btn-primary btn-block'>
+      <div className='form-group'>
+        <label>Confirmar contraseña</label>
+        <input
+          type='password'
+          className='form-control'
+          placeholder='Ingrese la contraseña nuevamente'
+          name='confirm'
+          onChange={handleInputChange}
+        />
+      </div>
+
+      <button
+        type='submit'
+        className='btn btn-primary btn-block'
+        disabled={
+          !register.name ||
+          !register.email ||
+          !register.password ||
+          !register.confirm ||
+          register.confirm !== register.password
+        }
+      >
         Enviar
       </button>
     </form>

@@ -4,6 +4,7 @@ export const PostContext = createContext();
 
 export const PostProvider = (props) => {
   const [posts, setPosts] = useState([]);
+  const [filtered, setFiltered] = useState(false);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -15,7 +16,7 @@ export const PostProvider = (props) => {
   }, []);
 
   return (
-    <PostContext.Provider value={{ posts, setPosts }}>
+    <PostContext.Provider value={{ posts, setPosts, filtered, setFiltered }}>
       {props.children}
     </PostContext.Provider>
   );

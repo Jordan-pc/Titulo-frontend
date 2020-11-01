@@ -53,9 +53,11 @@ export const Login = () => {
       <h3 className='text-center'>Iniciar Sesión</h3>
 
       {errors.map((error, index) => (
-        <p className='text-danger text-break text-justify' key={index}>
-          Error: {error}
-        </p>
+        <div className='card border-danger mx-auto m-2' key={index}>
+          <div className='card-body text-danger'>
+            <p className='card-text'>Error: {error}</p>
+          </div>
+        </div>
       ))}
 
       <div className='form-group'>
@@ -80,7 +82,11 @@ export const Login = () => {
         />
       </div>
 
-      <button type='submit' className='btn btn-primary btn-block mt-3'>
+      <button
+        type='submit'
+        className='btn btn-primary btn-block mt-3'
+        disabled={!register.email || !register.password}
+      >
         Submit
       </button>
     </form>
