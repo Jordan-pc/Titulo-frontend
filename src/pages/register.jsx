@@ -14,6 +14,11 @@ export const Register = () => {
 
   const sendRegister = async (event) => {
     event.preventDefault();
+    const regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!regexp.test(register.email)) {
+      setErrors(['Ingrese un correo valido']);
+      return;
+    }
     const response = await fetch('http://localhost:3000/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -38,6 +43,7 @@ export const Register = () => {
         return;
       }
     }
+    setErrors([]);
     setRes(true);
   };
 

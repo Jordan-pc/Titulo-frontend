@@ -13,6 +13,11 @@ export const Login = () => {
 
   const sendLogin = async (event) => {
     event.preventDefault();
+    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!regex.test(register.email)) {
+      setErrors(['Ingrese un correo valido']);
+      return;
+    }
     const response = await fetch('http://localhost:3000/auth/login', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
