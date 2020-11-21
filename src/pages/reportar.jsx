@@ -4,6 +4,7 @@ import { environment } from '../config/environment';
 export const Reportar = (props) => {
   const [report, setReport] = useState({});
   const [errors, setErrors] = useState([]);
+  const [res, setRes] = useState(false);
 
   const handleInputChange = (event) => {
     setReport({
@@ -32,6 +33,7 @@ export const Reportar = (props) => {
       if (response.status !== 200) {
         if (status.message) {
           setErrors([status.message]);
+          setRes(false);
           return;
         } else if (status.errors) {
           const err = [];
@@ -42,11 +44,31 @@ export const Reportar = (props) => {
             return err;
           });
           setErrors([err]);
+          setRes(false);
           return;
         }
       }
+      setErrors([]);
+      setRes(true);
+      await delay(3500);
       window.location = '/';
     }
+  };
+
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  const Success = () => {
+    if (res) {
+      return (
+        <div className='card border-success mx-auto m-2'>
+          <div className='card-body text-success text-center'>
+            <p className='card-text'> Reporte realizado correctamente</p>
+            <p className='card-text'> Redirigiendo al inicio</p>
+          </div>
+        </div>
+      );
+    }
+    return <></>;
   };
 
   return (
@@ -63,6 +85,8 @@ export const Reportar = (props) => {
         </p>
       ))}
 
+      <Success></Success>
+
       <div className='form-group'>
         <label>Falta o problema</label>
         <select
@@ -73,6 +97,8 @@ export const Reportar = (props) => {
           <option>Seleccione...</option>
           <option>Contenido inadecuado</option>
           <option>Lenguaje ofensivo</option>
+          <option>Contenido inaccesible/desactualizado</option>
+          <option>Otros</option>
         </select>
       </div>
 

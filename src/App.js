@@ -12,6 +12,9 @@ import { MisPublicaciones } from './pages/mispublicaciones';
 import { Reportar } from './pages/reportar';
 import { Reports } from './pages/reports';
 import { Perfil } from './pages/perfil';
+import { VerifyAccount } from './pages/verifyAccount';
+import { ForgotPassoword } from './pages/forgotPassword';
+import { ResetPassword } from './pages/resetPassword';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
@@ -28,6 +31,9 @@ function App() {
         <Route path='/publications/modify/:id' component={ModificarPost} />
         <Route path='/publications/:id' component={Post} />
         <Route path='/publicar' component={Publicar} />
+        <Route path='/validate/email/:id' component={VerifyAccount} />
+        <Route path='/reset/password/:id' component={ResetPassword} />
+        <Route path='/forgot/password' component={ForgotPassoword} />
         <PostProvider>
           <Route path='/' exact>
             <Home />

@@ -1,5 +1,6 @@
 import React from 'react';
 import logoutem from '../assets/Logoutem-1.png';
+import { Link } from 'react-router-dom';
 
 export const NavBar = () => {
   const cerrarSesion = () => {
@@ -13,9 +14,9 @@ export const NavBar = () => {
       return (
         <>
           <li className='nav-item'>
-            <a className='nav-link' href='/reportes'>
+            <Link className='nav-link' to='/reportes'>
               Reportes
-            </a>
+            </Link>
           </li>
         </>
       );
@@ -36,25 +37,25 @@ export const NavBar = () => {
                 </a>
               </li>
               <li className='nav-item'>
-                <a className='nav-link' href='/publicar'>
-                  Hacer una publicación
-                </a>
+                <Link className='nav-link' to='/publicar'>
+                  Nueva publicación
+                </Link>
               </li>
               <li className='nav-item'>
-                <a className='nav-link' href='/mispublicaciones'>
+                <Link className='nav-link' to='/mispublicaciones'>
                   Mis publicaciones
-                </a>
+                </Link>
               </li>
               <UserRole></UserRole>
             </ul>
           </div>
           <div className='navbar-nav ml-md-auto'>
-            <a
+            <Link
               className='nav-link btn btn-outline-info action-button text-dark ml-2'
-              href='/perfil'
+              to='/perfil'
             >
-              Hola {sessionStorage.getItem('name')}
-            </a>
+              Mis datos
+            </Link>
             <a
               className='nav-link btn btn-outline-info action-button text-dark ml-2'
               href='/'
@@ -71,25 +72,25 @@ export const NavBar = () => {
         <div className='navbar-nav-scroll'>
           <ul className='navbar-nav bd-navbar-nav flex-row'>
             <li className='nav-item'>
-              <a className='nav-link' href='/'>
+              <Link className='nav-link' to='/'>
                 Inicio
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
         <div className='navbar-nav ml-md-auto'>
-          <a
+          <Link
             className='nav-link btn btn-outline-info action-button text-dark'
-            href='/login'
+            to='/login'
           >
-            Inicio de sección
-          </a>
-          <a
+            Inicio de Sesión
+          </Link>
+          <Link
             className='nav-link btn btn-outline-info action-button text-dark ml-2'
-            href='/signup'
+            to='/signup'
           >
             Registrarse
-          </a>
+          </Link>
         </div>
       </>
     );

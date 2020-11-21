@@ -109,14 +109,16 @@ export const Filter = () => {
               ></input>
             </div>
             <div className='form-group mt-3'>
-              <label htmlFor='area'>Categorias</label>
+              <label htmlFor='area'>
+                Categorias{' '}
+                <small className='text-muted'>(Selección multiple)</small>
+              </label>
               <select
                 className='selectpicker form-control'
                 name='categorys'
                 multiple='multiple'
                 onChange={handleInputArrayChange}
               >
-                <option disabled>Selección multiple</option>
                 <option value='ingeniería'>Ingeniería</option>
                 <option value='software'>Software</option>
                 <option value='arquitectura'>Arquitectura</option>
@@ -137,7 +139,12 @@ export const Filter = () => {
               </small>
             </div>
             <div className='form-group mt-3'>
-              <label htmlFor='tags'>Tags</label>
+              <label htmlFor='tags'>
+                Tags{' '}
+                <small className='text-muted'>
+                  (Ingrese los tags uno a uno)
+                </small>
+              </label>
               <input
                 id='tags'
                 className='form-control'
@@ -170,7 +177,7 @@ export const Filter = () => {
                 filtro.tags.length === 0
               }
             >
-              Filtrar
+              Buscar
             </button>
             <button
               className='btn btn-outline-secondary mb-3 ml-3'

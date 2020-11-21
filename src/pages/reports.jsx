@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { environment } from '../config/environment';
+import { Link } from 'react-router-dom';
 
 export const Reports = () => {
   const [reports, setReports] = useState([
@@ -81,12 +82,12 @@ export const Reports = () => {
           <div className='card-body'>
             <p>{report.content}</p>
             <div className='row'>
-              <a
+              <Link
                 className='text-decoration-none col-sm'
-                href={'/publications/' + report.publication}
+                to={'/publications/' + report.publication}
               >
                 Ir a la publicación
-              </a>
+              </Link>
               <div>
                 <button
                   className='btn btn-primary float-right'
@@ -101,14 +102,9 @@ export const Reports = () => {
           </div>
         </div>
       ))}
-      <button
-        className='btn btn-primary mt-3 ml-3'
-        onClick={() => {
-          window.location = '/';
-        }}
-      >
+      <Link className='btn btn-primary mt-3 ml-3' to='/'>
         Volver al inicio
-      </button>
+      </Link>
     </div>
   );
 };

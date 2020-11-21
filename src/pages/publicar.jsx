@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { environment } from '../config/environment';
+import { Link } from 'react-router-dom';
 
 export const Publicar = () => {
   const [form, setForm] = useState({
@@ -7,6 +8,7 @@ export const Publicar = () => {
     tags: []
   });
   const [errors, setErrors] = useState([]);
+  const [res, setRes] = useState(false);
 
   const handleInputChange = (event) => {
     setForm({
@@ -88,6 +90,7 @@ export const Publicar = () => {
     if (response.status !== 200) {
       if (status.message) {
         setErrors([status.message]);
+        setRes(false);
         return;
       } else if (status.errors) {
         const err = [];
@@ -98,17 +101,39 @@ export const Publicar = () => {
           return err;
         });
         setErrors([err]);
+        setRes(false);
         return;
       }
     }
+    setRes(true);
+    await delay(3500);
     window.location = '/';
   };
+  const Success = () => {
+    if (res) {
+      return (
+        <div className='card border-success mx-auto m-2'>
+          <div className='card-body text-success text-center'>
+            <p className='card-text'> Publicación realizada correctamente</p>
+            <p className='card-text'> Redirigiendo al inicio</p>
+          </div>
+        </div>
+      );
+    }
+    return <></>;
+  };
+
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   return (
     <div className='card m-4'>
       <div className='jumbotron bg-white'>
-        <h5 className='text-center display-4'>Realiza una publicación</h5>
+        <strong>
+          <h5 className='text-center display-4'>Realiza una publicación</h5>
+        </strong>
         <hr className='my-4' />
+
+        <Success></Success>
 
         {errors.map((error, index) => (
           <div className='card border-danger mx-auto m-2' key={index}>
@@ -164,7 +189,10 @@ export const Publicar = () => {
 
           <div className='form-group'>
             <h5>
-              <label htmlFor='categorys'>Categorias</label>
+              <label htmlFor='categorys'>
+                Categorías{' '}
+                <small className='text-muted'>(Selección multiple)</small>
+              </label>
             </h5>
             <select
               className='selectpicker form-control'
@@ -172,7 +200,6 @@ export const Publicar = () => {
               multiple='multiple'
               onChange={handleInputArrayChange}
             >
-              <option disabled>Selección multiple</option>
               <option value='ingeniería'>Ingeniería</option>
               <option value='software'>Software</option>
               <option value='arquitectura'>Arquitectura</option>
@@ -195,7 +222,12 @@ export const Publicar = () => {
 
           <div className='form-group'>
             <h5>
-              <label htmlFor='tags'>Tags</label>
+              <label htmlFor='tags'>
+                Tags{' '}
+                <small className='text-muted'>
+                  (Ingrese las palabras una a una)
+                </small>
+              </label>
             </h5>
             <input
               id='tags'
@@ -233,15 +265,11 @@ export const Publicar = () => {
           >
             Publicar
           </button>
-          <button
-            className='btn btn-primary mt-3 ml-3'
-            onClick={() => {
-              window.location = '/';
-            }}
-          >
+          <Link className='btn btn-primary mt-3 ml-3' to='/'>
             Volver al inicio
-          </button>
+          </Link>
         </form>
+        <Success></Success>
       </div>
     </div>
   );

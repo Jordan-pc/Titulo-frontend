@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { environment } from '../config/environment';
+import { Link } from 'react-router-dom';
 
 export const MisPublicaciones = () => {
   const [posts, setPosts] = useState([]);
@@ -35,20 +36,18 @@ export const MisPublicaciones = () => {
           <h5 className='card-title card-header'>{post.title}</h5>
           <div className='card-body'>
             <p className='card-title'>{post.content.substr(0, 300) + '...'}</p>
-            <a className='stretched-link' href={'/publications/' + post._id}>
+            <Link className='stretched-link' to={'/publications/' + post._id}>
               {' '}
-            </a>
+            </Link>
           </div>
         </div>
       ))}
-      <button
+      <Link
         className='btn btn-primary mt-3 ml-3'
-        onClick={() => {
-          window.location = '/';
-        }}
+        to='/'
       >
         Volver al inicio
-      </button>
+      </Link>
     </div>
   );
 };

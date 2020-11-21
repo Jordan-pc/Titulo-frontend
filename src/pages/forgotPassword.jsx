@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { environment } from '../config/environment';
 import { Link } from 'react-router-dom';
 
-export const Register = () => {
-  const [register, setRegister] = useState({});
-  const [res, setRes] = useState(false);
+export const ForgotPassoword = () => {
+  const [email, setEmail] = useState({ email: '' });
   const [errors, setErrors] = useState([]);
+  const [res, setRes] = useState(false);
 
   const handleInputChange = (event) => {
-    setRegister({
-      ...register,
+    setEmail({
+      ...email,
       [event.target.name]: event.target.value
     });
   };
@@ -18,14 +18,14 @@ export const Register = () => {
     event.preventDefault();
     // eslint-disable-next-line
     const regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!regexp.test(register.email)) {
+    if (!regexp.test(email.email)) {
       setErrors(['Ingrese un correo valido']);
       return;
     }
-    const response = await fetch(environment.API_URL + '/signin', {
-      method: 'post',
+    const response = await fetch(environment.API_URL + '/user/forgot', {
+      method: 'put',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(register)
+      body: JSON.stringify(email)
     });
     const status = await response.json();
     if (response.status !== 200) {
@@ -56,11 +56,9 @@ export const Register = () => {
       return (
         <div className='card border-success mx-auto m-2'>
           <div className='card-body text-success'>
-            <p className='card-text'>Usuario registrado correctamente</p>
             <p className='card-text'>
-              Se ha enviado un mail al correo indicado para que verifiques tu
-              cuenta, una vez hecho esto, podras ingresar a la plataforma. Una
-              vez verificada tu cuenta, ingresa a la plataforma{' '}
+              Se ha enviado un mail para reestablecer la contraseña, una vez
+              restablecida puedes ingresar a la plataforma{' '}
               <Link to='/login'>aquí</Link>
             </p>
           </div>
@@ -76,10 +74,6 @@ export const Register = () => {
       onSubmit={sendRegister}
       style={{ maxWidth: '500px' }}
     >
-      <h3 className='text-center'>Regístrate</h3>
-
-      <Success></Success>
-
       {errors.map((error, index) => (
         <div className='card border-danger mx-auto m-2' key={index}>
           <div className='card-body text-danger'>
@@ -88,16 +82,7 @@ export const Register = () => {
         </div>
       ))}
 
-      <div className='form-group'>
-        <label>Nombre</label>
-        <input
-          type='text'
-          className='form-control'
-          placeholder='Ingresa tu nombre y apellido'
-          name='name'
-          onChange={handleInputChange}
-        />
-      </div>
+      <Success></Success>
 
       <div className='form-group'>
         <label>Correo</label>
@@ -110,38 +95,10 @@ export const Register = () => {
         />
       </div>
 
-      <div className='form-group'>
-        <label>Contraseña</label>
-        <input
-          type='password'
-          className='form-control'
-          placeholder='Ingrese la contraseña'
-          name='password'
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <div className='form-group'>
-        <label>Confirmar contraseña</label>
-        <input
-          type='password'
-          className='form-control'
-          placeholder='Ingrese la contraseña nuevamente'
-          name='confirm'
-          onChange={handleInputChange}
-        />
-      </div>
-
       <button
         type='submit'
         className='btn btn-primary btn-block'
-        disabled={
-          !register.name ||
-          !register.email ||
-          !register.password ||
-          !register.confirm ||
-          register.confirm !== register.password
-        }
+        disabled={!email.email}
       >
         Enviar
       </button>

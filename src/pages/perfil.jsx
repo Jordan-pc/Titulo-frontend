@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { environment } from '../config/environment';
+import { Link } from 'react-router-dom';
 
 export const Perfil = () => {
   const [profile, setProfile] = useState({
@@ -208,9 +209,9 @@ export const Perfil = () => {
           <button className='btn btn-primary m-4' type='submit'>
             Modificar Datos
           </button>
-          <a className='btn btn-primary m-4' href='/'>
+          <Link className='btn btn-primary m-4' to='/'>
             Volver al inicio
-          </a>
+          </Link>
         </div>
       </form>
     </div>

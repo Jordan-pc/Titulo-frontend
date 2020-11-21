@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { environment } from '../config/environment';
+import { Link } from 'react-router-dom';
 
 export const Login = () => {
   const [register, setRegister] = useState({});
@@ -94,8 +95,14 @@ export const Login = () => {
         className='btn btn-primary btn-block mt-3'
         disabled={!register.email || !register.password}
       >
-        Submit
+        Ingresar
       </button>
+      <small className='forgot-password text-right'>
+        <Link to='/forgot/password'>Olvidaste tu contraseña?</Link>
+      </small>
+      <small className='mt-3 text-center'>
+        Si no estas registrado, <Link to='/signup'>ingresa aquí</Link>
+      </small>
     </form>
   );
 };

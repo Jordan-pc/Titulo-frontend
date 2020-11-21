@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { environment } from '../config/environment';
+import { Link } from 'react-router-dom';
 
 export const ModificarPost = (props) => {
   const [form, setForm] = useState({
@@ -243,14 +244,12 @@ export const ModificarPost = (props) => {
           <button type='submit' className='btn btn-primary mt-3'>
             Modificar
           </button>
-          <button
+          <Link
             className='btn btn-primary mt-3 ml-3'
-            onClick={() => {
-              window.location = '/';
-            }}
+            to='/'
           >
             Volver al inicio
-          </button>
+          </Link>
         </form>
       </div>
     </div>

@@ -49,7 +49,7 @@ export const Comment = (props) => {
   };
 
   return (
-    <div className='w-75 card ml-5 mr-5 mb-2 bg-light'>
+    <div className='card ml-3 mr-3 mb-2 bg-light'>
       {errors.map((error, index) => (
         <p className='text-danger text-break text-justify' key={index}>
           Error: {error}
@@ -58,7 +58,7 @@ export const Comment = (props) => {
       <form className='p-3' onSubmit={doComment}>
         <div className='form-group'>
           <h5>
-            <label htmlFor='content'>Algun comentario?</label>
+            <label htmlFor='content'>Algún comentario?</label>
           </h5>
           <textarea
             id='content'

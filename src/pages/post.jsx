@@ -21,7 +21,7 @@ export const Post = (props) => {
       return <h3 className='ml-5'>Comentarios</h3>;
     }
     if (id) {
-      return <h3 className='ml-5'>Se el primero en comentar!</h3>;
+      return <h3 className='ml-5'>Sé el primero en comentar!</h3>;
     }
     return <></>;
   };
@@ -34,10 +34,7 @@ export const Post = (props) => {
         {comments.map((comment, index) => {
           if (comment.commentedBy === id) {
             return (
-              <div
-                className='w-75 card ml-5 mr-5 mb-2 bg-light'
-                key={comment._id}
-              >
+              <div className='card ml-3 mr-3 mb-2 bg-light' key={comment._id}>
                 <form className='p-3'>
                   <div className='form-group'>
                     <textarea
@@ -82,7 +79,7 @@ export const Post = (props) => {
                       }
                     }}
                   >
-                    Modificar
+                    Guardar
                   </button>
                   <button
                     className='btn btn-danger float-right'
@@ -110,10 +107,7 @@ export const Post = (props) => {
             );
           } else if (role === 'ADMIN') {
             return (
-              <div
-                className='w-75 card ml-5 mr-5 mb-2 bg-light'
-                key={comment._id}
-              >
+              <div className='card ml-3 mr-3 mb-2 bg-light' key={comment._id}>
                 <div className='card-body'>{comment.content}</div>
                 <div>
                   <button
@@ -143,10 +137,7 @@ export const Post = (props) => {
             );
           }
           return (
-            <div
-              className='w-75 card ml-5 mr-5 mb-2 bg-light'
-              key={comment._id}
-            >
+            <div className='card ml-3 mr-3 mb-2 bg-light' key={comment._id}>
               <div className='card-body'>{comment.content}</div>
             </div>
           );
@@ -283,6 +274,11 @@ export const Post = (props) => {
     }
   };
 
+  const Fecha = (props) => {
+    const date = new Date(props.createdAt);
+    return <p>Fecha de publicación: {date.toLocaleDateString()}</p>;
+  };
+
   useEffect(() => {
     const getPost = async () => {
       const comentarios = [];
@@ -318,9 +314,13 @@ export const Post = (props) => {
           </div>
           <ShowContent></ShowContent>
           <ShowUrl></ShowUrl>
-          <div className='mt-3'>
-            <p className='text-muted'>Publicado por: {publishedBy.name}</p>
+          <div className='text-muted mt-3'>
+            <div className='row'>
+              <p className='ml-3 mr-2'>Publicado por: {publishedBy.name}</p>
+              <Fecha createdAt={Publication.createdAt}></Fecha>
+            </div>
           </div>
+
           {errors.map((error, index) => (
             <p className='text-danger text-break text-justify' key={index}>
               Error: {error}
@@ -340,14 +340,16 @@ export const Post = (props) => {
         </div>
       </div>
 
-      <CommentTitle></CommentTitle>
-      {/* {comments.map((comment, index) => (
+      <div className='container'>
+        <CommentTitle></CommentTitle>
+        {/* {comments.map((comment, index) => (
         <div className='w-75 card ml-5 mr-5 mb-2 bg-light' key={index}>
           <div className='card-body'>{comment}</div>
         </div>
       ))} */}
-      <ShowComments></ShowComments>
-      <DoComment></DoComment>
+        <DoComment></DoComment>
+        <ShowComments></ShowComments>
+      </div>
     </>
   );
 };

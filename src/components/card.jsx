@@ -1,23 +1,9 @@
 import React, { useContext } from 'react';
 import { PostContext } from '../context/postContext';
+import { Link } from 'react-router-dom';
 
 export const Card = () => {
   const { posts } = useContext(PostContext);
-
-  const CardFooter = (props) => {
-    const categorys = props.post.categorys;
-    if (categorys && categorys.length !== 0) {
-      return (
-        <div className='text-muted'>
-          <small>Categorias: </small>
-          {categorys.map((categoria, index) => (
-            <small key={index}>-{categoria} </small>
-          ))}
-        </div>
-      );
-    }
-    return <></>;
-  };
 
   const NoPosts = () => {
     if (posts.length === 0) {
@@ -30,6 +16,15 @@ export const Card = () => {
     return <></>;
   };
 
+  const Fecha = (props) => {
+    const date = new Date(props.createdAt);
+    return (
+      <small className='float-right'>
+        Fecha de publicación: {date.toLocaleDateString()}
+      </small>
+    );
+  };
+
   return (
     <>
       <NoPosts></NoPosts>
@@ -38,10 +33,15 @@ export const Card = () => {
           <h5 className='card-header'>{post.title}</h5>
           <div className='card-body'>
             <p>{post.content.substr(0, 300) + '...'}</p>
-            <CardFooter post={post}></CardFooter>
-            <a className='stretched-link' href={'/publications/' + post._id}>
+
+            <div className='text-muted'>
+              <small>Categorias: {post.categorys + ' '}</small>
+              <Fecha createdAt={post.createdAt}></Fecha>
+            </div>
+
+            <Link className='stretched-link' to={'/publications/' + post._id}>
               {' '}
-            </a>
+            </Link>
           </div>
         </div>
       ))}
