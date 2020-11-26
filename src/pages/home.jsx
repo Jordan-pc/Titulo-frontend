@@ -3,6 +3,7 @@ import { PostContext } from '../context/postContext';
 
 import { Card } from '../components/card';
 import { Filter } from '../components/filter';
+import { MoreTrafic } from '../components/moretrafic';
 import { environment } from '../config/environment';
 
 export const Home = () => {
@@ -16,7 +17,7 @@ export const Home = () => {
       environment.API_URL + '/publications?page=' + page
     );
     const publications = await response.json();
-    setPosts(publications);
+    setPosts(publications.posts);
     setNext(false);
     if (publications.length < 5) {
       setNext(true);
@@ -30,6 +31,7 @@ export const Home = () => {
       </div>
       <div className='col-md-4'>
         <Filter></Filter>
+        <MoreTrafic></MoreTrafic>
       </div>
       <div className='row no-gutters'>
         <button

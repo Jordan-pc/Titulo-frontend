@@ -14,6 +14,7 @@ export const Post = (props) => {
   ]);
   const [ID, setId] = useState();
   const [errors, setErrors] = useState([]);
+  const [likes, setLikes] = useState(0);
 
   const CommentTitle = () => {
     const id = sessionStorage.getItem('id');
@@ -297,6 +298,7 @@ export const Post = (props) => {
       setPublication(post);
       setComments(comentarios);
       setId('modify/' + props.match.params.id);
+      setLikes(post.likes.length);
     };
     getPost();
   }, [props.match.params.id]);
@@ -314,6 +316,7 @@ export const Post = (props) => {
           </div>
           <ShowContent></ShowContent>
           <ShowUrl></ShowUrl>
+          <p className='mt-2 text-muted'>Likes: {likes}</p>
           <div className='text-muted mt-3'>
             <div className='row'>
               <p className='ml-3 mr-2'>Publicado por: {publishedBy.name}</p>

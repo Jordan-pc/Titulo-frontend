@@ -8,7 +8,7 @@ export const Filter = () => {
     tags: []
   });
 
-  const { setPosts, setFiltered } = useContext(PostContext);
+  const { setPosts, setFiltered, setTotal } = useContext(PostContext);
 
   const handleInputChange = (event) => {
     setFiltro({
@@ -77,7 +77,8 @@ export const Filter = () => {
       body: JSON.stringify(data)
     });
     const publications = await response.json();
-    setPosts(publications);
+    setPosts(publications.posts);
+    setTotal([publications.total]);
   };
 
   const deleteElement = async (array, index) => {

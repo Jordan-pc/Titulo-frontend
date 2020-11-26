@@ -72,9 +72,9 @@ export const NavBar = () => {
         <div className='navbar-nav-scroll'>
           <ul className='navbar-nav bd-navbar-nav flex-row'>
             <li className='nav-item'>
-              <Link className='nav-link' to='/'>
+              <a className='nav-link' href='/'>
                 Inicio
-              </Link>
+              </a>
             </li>
           </ul>
         </div>
