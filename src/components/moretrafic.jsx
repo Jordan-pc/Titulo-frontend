@@ -26,7 +26,13 @@ export const MoreTrafic = () => {
               <p>
                 <small>Likes: {like.numberLikes}</small>
               </p>
-              <Link className='stretched-link' to={'/publications/' + like._id}>
+              <Link
+                className='stretched-link'
+                to={'/publications/' + like._id}
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                }}
+              >
                 {' '}
               </Link>
             </div>
@@ -41,6 +47,9 @@ export const MoreTrafic = () => {
               <Link
                 className='stretched-link'
                 to={'/publications/' + commented._id}
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                }}
               >
                 {' '}
               </Link>

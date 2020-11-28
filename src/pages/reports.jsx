@@ -85,6 +85,9 @@ export const Reports = () => {
               <Link
                 className='text-decoration-none col-sm'
                 to={'/publications/' + report.publication}
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                }}
               >
                 Ir a la publicación
               </Link>

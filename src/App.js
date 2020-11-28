@@ -15,6 +15,7 @@ import { Perfil } from './pages/perfil';
 import { VerifyAccount } from './pages/verifyAccount';
 import { ForgotPassoword } from './pages/forgotPassword';
 import { ResetPassword } from './pages/resetPassword';
+import { Stadistics } from './pages/stadistics';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path='/mispublicaciones' exact component={MisPublicaciones} />
         <Route path='/perfil' exact component={Perfil} />
         <Route path='/reportes' exact component={Reports} />
+        <Route path='/stadistics' exact component={Stadistics} />
         <Route path='/reportar/:id' component={Reportar} />
         <Route path='/publications/modify/:id' component={ModificarPost} />
         <Route path='/publications/:id' component={Post} />

@@ -9,7 +9,7 @@ export const MisPublicaciones = () => {
     if (posts.length > 0) {
       return <></>;
     }
-    return <p>No hay publicaciones registradas</p>;
+    return <p className='ml-2'>No hay publicaciones registradas</p>;
   };
 
   useEffect(() => {
@@ -36,16 +36,19 @@ export const MisPublicaciones = () => {
           <h5 className='card-title card-header'>{post.title}</h5>
           <div className='card-body'>
             <p className='card-title'>{post.content.substr(0, 300) + '...'}</p>
-            <Link className='stretched-link' to={'/publications/' + post._id}>
+            <Link
+              className='stretched-link'
+              to={'/publications/' + post._id}
+              onClick={() => {
+                window.scrollTo(0, 0);
+              }}
+            >
               {' '}
             </Link>
           </div>
         </div>
       ))}
-      <Link
-        className='btn btn-primary mt-3 ml-3'
-        to='/'
-      >
+      <Link className='btn btn-primary mt-3 ml-3' to='/'>
         Volver al inicio
       </Link>
     </div>

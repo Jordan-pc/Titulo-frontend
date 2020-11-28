@@ -18,6 +18,11 @@ export const NavBar = () => {
               Reportes
             </Link>
           </li>
+          <li className='nav-item'>
+            <Link className='nav-link' to='/stadistics'>
+              Estadisticas
+            </Link>
+          </li>
         </>
       );
     }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Comment } from '../components/comment';
 import { environment } from '../config/environment';
+import { BiLike, BiDislike } from 'react-icons/bi';
 
 export const Post = (props) => {
   const [Publication, setPublication] = useState({ url: '' });
@@ -15,6 +16,7 @@ export const Post = (props) => {
   const [ID, setId] = useState();
   const [errors, setErrors] = useState([]);
   const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
 
   const CommentTitle = () => {
     const id = sessionStorage.getItem('id');
@@ -280,6 +282,77 @@ export const Post = (props) => {
     return <p>Fecha de publicación: {date.toLocaleDateString()}</p>;
   };
 
+  const LikeButton = () => {
+    if (!liked)
+      return (
+        <div>
+          <button
+            className='ml-3 bg-white'
+            style={{ padding: '0', border: 'none', background: 'none' }}
+            onClick={likeFunction}
+          >
+            <BiLike></BiLike>
+          </button>
+        </div>
+      );
+    return (
+      <div>
+        <button
+          className='ml-3 bg-white'
+          style={{ padding: '0', border: 'none', background: 'none' }}
+          onClick={likeFunction}
+        >
+          <BiDislike></BiDislike>
+        </button>
+      </div>
+    );
+  };
+
+  const likeFunction = async () => {
+    setLiked(!liked);
+    if (!liked) {
+      setLikes(likes + 1);
+      const data = {
+        state: 'like'
+      };
+      const response = await fetch(
+        environment.API_URL + '/like/' + props.match.params.id,
+        {
+          method: 'put',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: sessionStorage.getItem('token')
+          },
+          body: JSON.stringify(data)
+        }
+      );
+      if (response.status !== 200) {
+        setLiked(!liked);
+        setLikes(likes - 1);
+      }
+    } else {
+      setLikes(likes - 1);
+      const data = {
+        state: 'dislike'
+      };
+      const response = await fetch(
+        environment.API_URL + '/like/' + props.match.params.id,
+        {
+          method: 'put',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: sessionStorage.getItem('token')
+          },
+          body: JSON.stringify(data)
+        }
+      );
+      if (response.status !== 200) {
+        setLiked(!liked);
+        setLikes(likes + 1);
+      }
+    }
+  };
+
   useEffect(() => {
     const getPost = async () => {
       const comentarios = [];
@@ -294,6 +367,8 @@ export const Post = (props) => {
       post.comments.forEach((element) => {
         comentarios.push(element);
       });
+      const contains = post.likes.includes(sessionStorage.getItem('id'));
+      setLiked(contains);
       setPublishedBy(post.publishedBy);
       setPublication(post);
       setComments(comentarios);
@@ -316,12 +391,15 @@ export const Post = (props) => {
           </div>
           <ShowContent></ShowContent>
           <ShowUrl></ShowUrl>
-          <p className='mt-2 text-muted'>Likes: {likes}</p>
           <div className='text-muted mt-3'>
             <div className='row'>
               <p className='ml-3 mr-2'>Publicado por: {publishedBy.name}</p>
               <Fecha createdAt={Publication.createdAt}></Fecha>
             </div>
+          </div>
+          <div className='row'>
+            <p className='ml-3 text-muted'>Likes: {likes}</p>
+            <LikeButton></LikeButton>
           </div>
 
           {errors.map((error, index) => (

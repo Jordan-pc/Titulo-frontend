@@ -39,7 +39,13 @@ export const Card = () => {
               <Fecha createdAt={post.createdAt}></Fecha>
             </div>
 
-            <Link className='stretched-link' to={'/publications/' + post._id}>
+            <Link
+              className='stretched-link'
+              to={'/publications/' + post._id}
+              onClick={() => {
+                window.scrollTo(0, 0);
+              }}
+            >
               {' '}
             </Link>
           </div>
