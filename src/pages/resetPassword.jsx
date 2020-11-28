@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { environment } from '../config/environment';
 import { Link } from 'react-router-dom';
+import * as crypto from 'asymmetric-crypto';
 
 export const ResetPassword = (props) => {
   const [register, setRegister] = useState({
@@ -9,6 +10,9 @@ export const ResetPassword = (props) => {
   });
   const [errors, setErrors] = useState([]);
   const [res, setRes] = useState(false);
+  const [key, setKey] = useState({});
+
+  const myKeyPair = crypto.keyPair();
 
   const handleInputChange = (event) => {
     setRegister({
@@ -19,13 +23,18 @@ export const ResetPassword = (props) => {
 
   const sendRegister = async (event) => {
     event.preventDefault();
+    const encrypted = crypto.encrypt(
+      JSON.stringify(register),
+      key,
+      myKeyPair.secretKey
+    );
     // eslint-disable-next-line
     const response = await fetch(
       environment.API_URL + '/user/password/' + props.match.params.id,
       {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(register)
+        body: JSON.stringify({ encrypted, publicKey: myKeyPair.publicKey })
       }
     );
     const status = await response.json();
@@ -66,6 +75,15 @@ export const ResetPassword = (props) => {
     }
     return <></>;
   };
+
+  useEffect(() => {
+    const getPublic = async () => {
+      const response = await fetch(environment.API_URL + '/key');
+      const data = await response.json();
+      setKey(data.key);
+    };
+    getPublic();
+  }, []);
 
   return (
     <form
@@ -121,6 +139,7 @@ export const ResetPassword = (props) => {
         className='btn btn-primary btn-block'
         disabled={
           !register.password ||
+          register.password.length <= 4 ||
           !register.passwordConfirmation ||
           register.passwordConfirmation !== register.password
         }
