@@ -43,6 +43,7 @@ export const Home = () => {
               setPage(page);
             }
             await getPosts();
+            window.scrollTo(0, 0);
           }}
         >
           Anterior
@@ -54,6 +55,7 @@ export const Home = () => {
             page = page + 1;
             setPage(page);
             await getPosts();
+            window.scrollTo(0, 0);
           }}
         >
           Siguiente

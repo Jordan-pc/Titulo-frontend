@@ -1,6 +1,7 @@
 import React from 'react';
 import logoutem from '../assets/Logoutem-1.png';
 import { Link } from 'react-router-dom';
+import './styles.css';
 
 export const NavBar = () => {
   const cerrarSesion = () => {
@@ -13,7 +14,7 @@ export const NavBar = () => {
     if (role === 'ADMIN') {
       return (
         <>
-          <li className='nav-item'>
+          <li className='nav-item second-item'>
             <Link className='nav-link' to='/reportes'>
               Reportes
             </Link>
@@ -29,14 +30,14 @@ export const NavBar = () => {
     return <></>;
   };
 
-  const Logged = (props) => {
+  const Logged = () => {
     const token = sessionStorage.getItem('token');
     if (token) {
       return (
         <>
           <div className='navbar-nav-scroll'>
             <ul className='navbar-nav bd-navbar-nav flex-row'>
-              <li className='nav-item'>
+              <li className='nav-item first-item'>
                 <a className='nav-link' href='/'>
                   Inicio
                 </a>

@@ -7,7 +7,6 @@ export const Stadistics = () => {
   const [liked, setLiked] = useState([]);
   const [commented, setCommented] = useState([]);
   // eslint-disable-next-line
-  const [users, setUsers] = useState([]);
   const [data, setData] = useState({});
   const [other, setOther] = useState({});
 
@@ -15,28 +14,13 @@ export const Stadistics = () => {
     const getPosts = async () => {
       const response = await fetch(environment.API_URL + '/stadistics');
       const publications = await response.json();
-      console.log(publications);
       setLiked(publications.mostLiked);
       setCommented(publications.mostCommented);
-      setUsers(publications.mostPublisher);
       setData({
-        labels: [
-          publications.mostLiked[0].title.substr(0, 10) + '...',
-          publications.mostLiked[1].title.substr(0, 10) +
-            '...'.substr(0, 10) +
-            '...',
-          publications.mostLiked[2].title.substr(0, 10) +
-            '...'.substr(0, 10) +
-            '...',
-          publications.mostLiked[3].title.substr(0, 10) +
-            '...'.substr(0, 10) +
-            '...',
-          publications.mostLiked[4].title.substr(0, 10) +
-            '...'.substr(0, 10) +
-            '...'
-        ],
+        labels: ['001. ', '002. ', '003. ', '004. ', '005. '],
         datasets: [
           {
+            barPercentage: 0.7,
             label: 'Likes',
             data: [
               publications.mostLiked[0].numberLikes,
@@ -56,15 +40,10 @@ export const Stadistics = () => {
         ]
       });
       setOther({
-        labels: [
-          publications.mostCommented[0].title.substr(0, 10) + '...',
-          publications.mostCommented[1].title.substr(0, 10) + '...',
-          publications.mostCommented[2].title.substr(0, 10) + '...',
-          publications.mostCommented[3].title.substr(0, 10) + '...',
-          publications.mostCommented[4].title.substr(0, 10) + '...'
-        ],
+        labels: ['001. ', '002. ', '003. ', '004. ', '005. '],
         datasets: [
           {
+            barPercentage: 0.7,
             label: 'Comentarios',
             data: [
               publications.mostCommented[0].numberComments,
@@ -74,7 +53,7 @@ export const Stadistics = () => {
               publications.mostCommented[4].numberComments
             ],
             backgroundColor: [
-              'rgba(255,99,132,0.6)',
+              'rgba(50,99,132,0.6)',
               'rgba(54,162,234,0.6)',
               'rgba(255,206,86,0.6)',
               'rgba(123,0,40,0.6)',
@@ -94,9 +73,10 @@ export const Stadistics = () => {
         <div className='m-1 row'>
           <div className='col'>
             <p>Publicaciones con más likes:</p>
-            {liked.map((post) => (
+            {liked.map((post, index) => (
               <div className='mb-2 card card-body' key={post._id}>
-                {post.title} - cantidad de likes: {post.numberLikes}
+                00{index + 1}. {post.title} - cantidad de likes:{' '}
+                {post.numberLikes}
                 <Link
                   className='stretched-link'
                   to={'/publications/' + post._id}
@@ -111,9 +91,10 @@ export const Stadistics = () => {
           </div>
           <div className='col'>
             <p>Publicaciones más comentadas:</p>
-            {commented.map((post) => (
+            {commented.map((post, index) => (
               <div className='mb-2 card card-body' key={post._id}>
-                {post.title} - cantidad de comentarios: {post.numberComments}
+                00{index + 1}. {post.title} - cantidad de comentarios:{' '}
+                {post.numberComments}
                 <Link
                   className='stretched-link'
                   to={'/publications/' + post._id}
@@ -128,10 +109,36 @@ export const Stadistics = () => {
           </div>
         </div>
         <div className='mb-3 mx-auto' style={{ maxWidth: '700px' }}>
-          <Bar data={data} options={{}}></Bar>
+          <Bar
+            data={data}
+            options={{
+              legend: {
+                display: true,
+                position: 'bottom'
+              },
+              title: {
+                display: true,
+                text: 'Publicaciones con más likes',
+                fontSize: 16
+              }
+            }}
+          ></Bar>
         </div>
         <div className='mb-3 mx-auto' style={{ maxWidth: '700px' }}>
-          <Bar data={other} options={{}}></Bar>
+          <Bar
+            data={other}
+            options={{
+              legend: {
+                display: true,
+                position: 'bottom'
+              },
+              title: {
+                display: true,
+                text: 'Publicaciones más comentadas',
+                fontSize: 16
+              }
+            }}
+          ></Bar>
         </div>
       </div>
     </div>

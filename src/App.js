@@ -31,15 +31,13 @@ function App() {
         <Route path='/stadistics' exact component={Stadistics} />
         <Route path='/reportar/:id' component={Reportar} />
         <Route path='/publications/modify/:id' component={ModificarPost} />
-        <Route path='/publications/:id' component={Post} />
         <Route path='/publicar' component={Publicar} />
         <Route path='/validate/email/:id' component={VerifyAccount} />
         <Route path='/reset/password/:id' component={ResetPassword} />
         <Route path='/forgot/password' component={ForgotPassoword} />
         <PostProvider>
-          <Route path='/' exact>
-            <Home />
-          </Route>
+          <Route path='/publications/:id' component={Post} />
+          <Route path='/' exact component={Home} />
         </PostProvider>
       </Switch>
     </Router>

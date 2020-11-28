@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Comment } from '../components/comment';
 import { environment } from '../config/environment';
 import { BiLike, BiDislike } from 'react-icons/bi';
+import { PostContext } from '../context/postContext';
+import { Link } from 'react-router-dom';
 
 export const Post = (props) => {
-  const [Publication, setPublication] = useState({ url: '' });
+  const [Publication, setPublication] = useState({
+    url: '',
+    categorys: [],
+    tags: []
+  });
   const [publishedBy, setPublishedBy] = useState({});
   const [comments, setComments] = useState([
     {
@@ -17,6 +23,8 @@ export const Post = (props) => {
   const [errors, setErrors] = useState([]);
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
+
+  const { setPosts, setTotal, setFiltered } = useContext(PostContext);
 
   const CommentTitle = () => {
     const id = sessionStorage.getItem('id');
@@ -173,6 +181,7 @@ export const Post = (props) => {
   };
 
   const ShowContent = () => {
+    console.log(Publication);
     if (Publication.content) {
       const text = Publication.content.split('\n');
       return (
@@ -384,10 +393,54 @@ export const Post = (props) => {
         <div className='jumbotron bg-white'>
           <h2 className='display-5'>{Publication.title}</h2>
           <div className='row'>
-            <p className='text-muted ml-3'>
-              Categorias: {Publication.categorys + ' '}
-            </p>
-            <p className='text-muted ml-3'>Tags: {Publication.tags + ' '}</p>
+            <p className='text-muted ml-3'>Categorias: </p>
+            {Publication.categorys.map((cat, index) => (
+              <Link
+                className='text-muted ml-1'
+                key={index}
+                onClick={async () => {
+                  const response = await fetch(
+                    environment.API_URL + '/publications/filter',
+                    {
+                      method: 'post',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ categorys: [cat] })
+                    }
+                  );
+                  const publications = await response.json();
+                  setPosts(publications.posts);
+                  setTotal([publications.total]);
+                  setFiltered(true);
+                }}
+                to='/'
+              >
+                {cat}
+              </Link>
+            ))}
+            <p className='text-muted ml-3'>Tags: </p>
+            {Publication.tags.map((tag, index) => (
+              <Link
+                className='text-muted ml-1'
+                key={index}
+                onClick={async () => {
+                  const response = await fetch(
+                    environment.API_URL + '/publications/filter',
+                    {
+                      method: 'post',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ tags: [tag] })
+                    }
+                  );
+                  const publications = await response.json();
+                  setPosts(publications.posts);
+                  setTotal([publications.total]);
+                  setFiltered(true);
+                }}
+                to='/'
+              >
+                {tag}
+              </Link>
+            ))}
           </div>
           <ShowContent></ShowContent>
           <ShowUrl></ShowUrl>
