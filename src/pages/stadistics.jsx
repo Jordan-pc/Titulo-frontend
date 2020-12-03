@@ -120,6 +120,16 @@ export const Stadistics = () => {
                 display: true,
                 text: 'Publicaciones con más likes',
                 fontSize: 16
+              },
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      beginAtZero: true,
+                      min: 0
+                    }
+                  }
+                ]
               }
             }}
           ></Bar>
@@ -136,6 +146,16 @@ export const Stadistics = () => {
                 display: true,
                 text: 'Publicaciones más comentadas',
                 fontSize: 16
+              },
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      beginAtZero: true,
+                      min: 0
+                    }
+                  }
+                ]
               }
             }}
           ></Bar>

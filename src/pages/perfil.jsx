@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { environment } from '../config/environment';
 import { Link } from 'react-router-dom';
+import * as crypto from 'asymmetric-crypto';
 
 export const Perfil = () => {
   const [profile, setProfile] = useState({
@@ -11,6 +12,9 @@ export const Perfil = () => {
   });
   const [res, setRes] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [key, setKey] = useState({});
+
+  const myKeyPair = crypto.keyPair();
 
   const handleInputChange = (event) => {
     setProfile({
@@ -49,13 +53,18 @@ export const Perfil = () => {
     }
     if (profile.old) {
       data.old = profile.old;
+      const encrypted = crypto.encrypt(
+        JSON.stringify(data),
+        key,
+        myKeyPair.secretKey
+      );
       const response = await fetch(environment.API_URL + '/profile/change', {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
           Authorization: sessionStorage.getItem('token')
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ encrypted, publicKey: myKeyPair.publicKey })
       });
       const status = await response.json();
       if (response.status !== 200) {
@@ -107,6 +116,12 @@ export const Perfil = () => {
         passwordConfirmation: ''
       });
     };
+    const getPublic = async () => {
+      const response = await fetch(environment.API_URL + '/key');
+      const data = await response.json();
+      setKey(data.key);
+    };
+    getPublic();
     getProfile();
   }, []);
 

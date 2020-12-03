@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { environment } from '../config/environment';
 import { Link } from 'react-router-dom';
+import * as crypto from 'asymmetric-crypto';
 
 export const Register = () => {
   const [register, setRegister] = useState({});
   const [res, setRes] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [key, setKey] = useState({});
+
+  const myKeyPair = crypto.keyPair();
 
   const handleInputChange = (event) => {
     setRegister({
@@ -22,10 +26,15 @@ export const Register = () => {
       setErrors(['Ingrese un correo valido']);
       return;
     }
+    const encrypted = crypto.encrypt(
+      JSON.stringify(register),
+      key,
+      myKeyPair.secretKey
+    );
     const response = await fetch(environment.API_URL + '/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(register)
+      body: JSON.stringify({ encrypted, publicKey: myKeyPair.publicKey })
     });
     const status = await response.json();
     if (response.status !== 200) {
@@ -69,6 +78,15 @@ export const Register = () => {
     }
     return <></>;
   };
+
+  useEffect(() => {
+    const getPublic = async () => {
+      const response = await fetch(environment.API_URL + '/key');
+      const data = await response.json();
+      setKey(data.key);
+    };
+    getPublic();
+  }, []);
 
   return (
     <form

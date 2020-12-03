@@ -299,6 +299,7 @@ export const Post = (props) => {
             className='ml-3 bg-white'
             style={{ padding: '0', border: 'none', background: 'none' }}
             onClick={likeFunction}
+            disabled={!sessionStorage.getItem('id')}
           >
             <BiLike></BiLike>
           </button>
@@ -310,6 +311,7 @@ export const Post = (props) => {
           className='ml-3 bg-white'
           style={{ padding: '0', border: 'none', background: 'none' }}
           onClick={likeFunction}
+          disabled={!sessionStorage.getItem('id')}
         >
           <BiDislike></BiDislike>
         </button>
@@ -476,11 +478,6 @@ export const Post = (props) => {
 
       <div className='container'>
         <CommentTitle></CommentTitle>
-        {/* {comments.map((comment, index) => (
-        <div className='w-75 card ml-5 mr-5 mb-2 bg-light' key={index}>
-          <div className='card-body'>{comment}</div>
-        </div>
-      ))} */}
         <DoComment></DoComment>
         <ShowComments></ShowComments>
       </div>
