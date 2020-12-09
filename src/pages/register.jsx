@@ -157,6 +157,7 @@ export const Register = () => {
           !register.name ||
           !register.email ||
           !register.password ||
+          register.password.length <= 4 ||
           !register.confirm ||
           register.confirm !== register.password
         }
